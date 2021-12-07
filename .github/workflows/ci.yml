@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+*"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+      - name: Install shfmt (https://github.com/mvdan/sh)
+        run: brew install shfmt
+      - name: Check shell script formatting with shfmt
+        run: shfmt -d -i 2 .
+      - name: Check shell script formatting with ShellCheck
+        run: |
+          shopt -s globstar nullglob
+          set -- **/*.{sh,bash,ksh}
+          if [ -n "$1" ]; then
+            echo "Checking $@"
+            shellcheck "$@"
+          else
+            echo "No shell scripts for ShellCheck to check."
+          fi
+        shell: bash
+        env:
+          SHELLCHECK_OPTS: -e SC1071 -e SC1090 -e SC1091
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install Black (https://black.readthedocs.io/en/stable/)
+        run: python3 -m pip install black
+      - name: Check Python formatting with Black
+        run: black --check .
