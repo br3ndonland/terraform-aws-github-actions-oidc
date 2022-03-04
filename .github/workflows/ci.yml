@@ -40,3 +40,14 @@ jobs:
         run: python3 -m pip install black
       - name: Check Python formatting with Black
         run: black --check .
+  publish:
+    if: github.ref_type == 'tag'
+    needs: [check]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: scripts/publish-terraform-module.sh
+        env:
+          GIT_REF: ${{ github.ref }}
+          GITHUB_REPO_NAME: ${{ github.repository }}
+          TERRAFORM_CLOUD_API_TOKEN: ${{ secrets.TERRAFORM_CLOUD_API_TOKEN_OWNERS }}
