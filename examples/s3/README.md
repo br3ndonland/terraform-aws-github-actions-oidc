@@ -25,5 +25,4 @@ If using the [Terraform Cloud remote backend](https://www.terraform.io/docs/clou
 | AWS_SECRET_ACCESS_KEY `SENSITIVE` | env       |
 | aws_provider_region               | terraform |
 | aws_s3_bucket_name                | terraform |
-| github_org                        | terraform |
-| github_repo                       | terraform |
+| github_repos                      | terraform |
