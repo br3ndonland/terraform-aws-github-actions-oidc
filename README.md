@@ -59,3 +59,9 @@ Then, [initialize and apply](https://developer.hashicorp.com/terraform/intro/cor
 terraform init
 terraform apply
 ```
+
+## Code quality
+
+- Terraform should be formatted with [`terraform fmt`](https://developer.hashicorp.com/terraform/cli/commands/fmt).
+- Shell scripts should be formatted with [`shfmt`](https://github.com/mvdan/sh), with two space indentations (`shfmt -i 2 -w .`), and will also be checked for errors with [ShellCheck](https://github.com/koalaman/shellcheck) (`shellcheck **/*.sh -S error`).
+- Other web code (JSON, Markdown, YAML) should be formatted with [Prettier](https://prettier.io/).
