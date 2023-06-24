@@ -10,7 +10,7 @@ Terraform Cloud added support for assuming roles with OIDC in March 2023. See th
 
 ### IAM users
 
-AWS access keys from IAM users can be stored as [Terraform Cloud variables](https://www.terraform.io/docs/cloud/workspaces/variables.html). Be sure to set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` as _environment_ variables, not _Terraform_ variables, otherwise `Warning: Value for undeclared variable` may be seen. See the [AWS docs on creating OIDC identity providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html) for more info on the IAM permissions required.
+AWS access keys from IAM users can be stored as [Terraform Cloud variables](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/variables). Be sure to set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` as _environment_ variables, not _Terraform_ variables, otherwise `Warning: Value for undeclared variable` may be seen. See the [AWS docs on creating OIDC identity providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html) for more info on the IAM permissions required.
 
 [AWS CLI IAM commands](https://docs.aws.amazon.com/cli/latest/reference/iam/index.html) look like this:
 

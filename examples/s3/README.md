@@ -17,7 +17,7 @@ Note some duplicate variable declarations in the [example `variables.tf` file](.
 
 ## Variables
 
-If using the [Terraform Cloud remote backend](https://www.terraform.io/docs/cloud/workspaces/variables.html), the following variables should be set in the remote workspace.
+If using the [Terraform Cloud backend](https://developer.hashicorp.com/terraform/language/settings/terraform-cloud), the following [variables should be set in the Terraform Cloud workspace](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/variables).
 
 | Key                               | Category  |
 | --------------------------------- | --------- |
