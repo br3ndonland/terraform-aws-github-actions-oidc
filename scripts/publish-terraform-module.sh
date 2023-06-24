@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# Publish a module to a Terraform Cloud or Terraform Enterprise Private Module Registry
+# https://developer.hashicorp.com/terraform/cloud-docs/api-docs/private-registry/modules
+
+# Note that this script does not work with the public registry (registry.terraform.io).
+# The public registry requires a connection with a public GitHub repo to publish modules.
+# https://developer.hashicorp.com/terraform/registry/api-docs
+# https://developer.hashicorp.com/terraform/registry/modules/publish
+
 # shell options
 set -eo pipefail
 shopt -s globstar nullglob
