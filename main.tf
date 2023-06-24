@@ -19,6 +19,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 # Define resource-based role trust policy for each IAM role
+# https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html
 
 data "aws_iam_policy_document" "role_trust_policy" {
   for_each = local.github_repos
@@ -42,6 +43,7 @@ data "aws_iam_policy_document" "role_trust_policy" {
 }
 
 # Create IAM roles for each repo and attach a role trust policy to each role
+# https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp.html
 
 resource "aws_iam_role" "github_actions_oidc" {
   for_each           = local.github_repos
