@@ -1,9 +1,9 @@
 terraform {
-  backend "remote" {
+  cloud {
     hostname     = "app.terraform.io"
     organization = "<YOUR_TERRAFORM_CLOUD_ORG>"
     workspaces {
-      prefix = "aws-github-actions-oidc-"
+      name = "aws-github-actions-oidc"
     }
   }
   required_providers {
