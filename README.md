@@ -6,6 +6,8 @@ GitHub has [introduced](https://github.blog/changelog/2021-10-27-github-actions-
 
 The [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) repo recommends OIDC, but only provides a CloudFormation snippet. The implementation in this repo is the Terraform equivalent. The [AWS Terraform provider](https://registry.terraform.io/providers/hashicorp/aws/latest) includes an [`iam_openid_connect_provider`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) resource for OIDC.
 
+This Terraform module is published to the public Terraform module registry [here](https://registry.terraform.io/modules/br3ndonland/github-actions-oidc/aws/latest). In addition to this module, see other implementations from Cloud Posse ([repo](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/github-oidc-provider), [docs](https://docs.cloudposse.com/components/library/aws/github-oidc-provider/)) and terraform-aws-modules ([repo](https://github.com/terraform-aws-modules/terraform-aws-), [docs](https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest)).
+
 ## Usage
 
 - Configure a [backend](https://developer.hashicorp.com/terraform/language/settings/backends/configuration) for Terraform state.
