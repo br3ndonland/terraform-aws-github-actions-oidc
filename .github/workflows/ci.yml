@@ -37,14 +37,3 @@ jobs:
         shell: bash
         env:
           SHELLCHECK_OPTS: -e SC1071 -e SC1090 -e SC1091
-  publish:
-    if: github.ref_type == 'tag'
-    needs: [check]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: scripts/publish-terraform-module.sh
-        env:
-          GIT_REF: ${{ github.ref }}
-          GITHUB_REPO_NAME: ${{ github.repository }}
-          TERRAFORM_CLOUD_API_TOKEN: ${{ secrets.TERRAFORM_CLOUD_API_TOKEN_OWNERS }}
