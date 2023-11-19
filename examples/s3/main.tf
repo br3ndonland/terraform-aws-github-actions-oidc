@@ -8,12 +8,6 @@ locals {
   }
 }
 
-# Configure provider
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs
-provider "aws" {
-  region = var.aws_provider_region
-}
-
 # Call module
 # https://developer.hashicorp.com/terraform/language/modules/syntax
 # https://developer.hashicorp.com/terraform/cloud-docs/registry/using
