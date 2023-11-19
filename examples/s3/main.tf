@@ -18,7 +18,7 @@ provider "aws" {
 # https://developer.hashicorp.com/terraform/language/modules/syntax
 # https://developer.hashicorp.com/terraform/cloud-docs/registry/using
 module "github_actions_oidc" {
-  source       = "app.terraform.io/<YOUR_TERRAFORM_CLOUD_ORG>/github-actions-oidc/aws"
+  source       = "br3ndonland/github-actions-oidc/aws"
   github_repos = var.github_repos
 }
 
