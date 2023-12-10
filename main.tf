@@ -38,7 +38,7 @@ data "tls_certificate" "github" {
 resource "aws_iam_openid_connect_provider" "github" {
   client_id_list  = local.oidc_client_ids
   thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
-  url             = "https://${local.oidc_issuer_domain}"
+  url             = data.tls_certificate.github.url
 }
 
 # Define resource-based role trust policy for each IAM role
