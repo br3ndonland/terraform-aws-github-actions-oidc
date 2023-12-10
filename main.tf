@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "role_trust_policy" {
     condition {
       test     = "StringEquals"
       variable = "${local.oidc_issuer_domain}:aud"
-      values   = local.oidc_client_ids
+      values   = one(aws_iam_openid_connect_provider.github.client_id_list)
     }
     condition {
       test     = "StringLike"
