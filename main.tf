@@ -9,17 +9,12 @@ locals {
     for repo in var.github_repos :
     lower(replace(repo, "/", "-")) => join(
       var.aws_iam_role_separator,
-      flatten(
-        [
-          var.aws_iam_role_prefix,
-          split(
-            "/",
-            var.aws_iam_role_prefix != lower(var.aws_iam_role_prefix) && var.aws_iam_role_separator == ""
-            ? repo
-            : lower(repo)
-          )
-        ]
-      )
+      [
+        var.aws_iam_role_prefix,
+        var.aws_iam_role_prefix != lower(var.aws_iam_role_prefix) && var.aws_iam_role_separator == ""
+        ? replace(repo, "/", var.aws_iam_role_separator)
+        : replace(lower(repo), "/", var.aws_iam_role_separator)
+      ]
     )
   }
   github_repos       = { for repo in var.github_repos : lower(replace(repo, "/", "-")) => repo }
