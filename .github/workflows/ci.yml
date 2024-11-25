@@ -16,7 +16,7 @@ jobs:
         run: |
           # mitigate https://github.com/actions/runner-images/issues/6283
           echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >>"$GITHUB_PATH"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v2
       - name: Check Terraform formatting
         run: terraform fmt -check -recursive
