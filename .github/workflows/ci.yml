@@ -20,6 +20,10 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
       - name: Check Terraform formatting
         run: terraform fmt -check -recursive
+      - name: Install Prettier
+        run: npm i -g "prettier@^${{ vars.PRETTIER_VERSION }}"
+      - name: Check web code formatting with Prettier
+        run: prettier . --check
       - name: Install shfmt (https://github.com/mvdan/sh)
         run: brew install shfmt
       - name: Check shell script formatting with shfmt
