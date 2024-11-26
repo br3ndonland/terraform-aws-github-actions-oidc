@@ -12,7 +12,7 @@ locals {
 # https://developer.hashicorp.com/terraform/language/modules/syntax
 # https://developer.hashicorp.com/terraform/cloud-docs/registry/using
 module "github_actions_oidc" {
-  source       = "br3ndonland/github-actions-oidc/aws"
+  source       = "github.com/br3ndonland/tofu-aws-github-actions-oidc"
   github_repos = var.github_repos_with_oidc
 }
 
