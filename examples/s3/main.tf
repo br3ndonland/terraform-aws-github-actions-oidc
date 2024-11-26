@@ -9,8 +9,7 @@ locals {
 }
 
 # Call module
-# https://developer.hashicorp.com/terraform/language/modules/syntax
-# https://developer.hashicorp.com/terraform/cloud-docs/registry/using
+# https://opentofu.org/docs/language/modules/sources/
 module "github_actions_oidc" {
   source       = "github.com/br3ndonland/tofu-aws-github-actions-oidc"
   github_repos = var.github_repos_with_oidc

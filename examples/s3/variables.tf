@@ -1,5 +1,5 @@
 variable "aws_provider_region" {
-  description = "AWS region to use when configuring AWS Terraform provider"
+  description = "AWS region to use when configuring AWS provider"
   type        = string
   default     = "us-east-1"
 }

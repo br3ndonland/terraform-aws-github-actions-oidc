@@ -11,18 +11,4 @@ Assumed roles can have two kinds of IAM policies attached: [resource-based and i
 
 IAM identity-based policies can be attached to the assumed role by creating [`aws_iam_role_policy_attachment` resources](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment), as shown in the [example](./main.tf).
 
-See the [HashiCorp Learn Terraform IAM policy tutorial](https://learn.hashicorp.com/tutorials/terraform/aws-iam-policy) and the [docs on the AWS provider `iam_policy_document` data source](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) for further info on authoring IAM policies for Terraform.
-
-Note some duplicate variable declarations in the [example `variables.tf` file](./variables.tf). All input variables used in a Terraform configuration must be explicitly declared, even if they are already declared in a child module.
-
-## Variables
-
-If using the [Terraform Cloud backend](https://developer.hashicorp.com/terraform/language/settings/terraform-cloud), the following [variables should be set in the Terraform Cloud workspace](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/variables).
-
-| Key                               | Category  |
-| --------------------------------- | --------- |
-| AWS_ACCESS_KEY_ID                 | env       |
-| AWS_SECRET_ACCESS_KEY `SENSITIVE` | env       |
-| aws_provider_region               | terraform |
-| aws_s3_bucket_name                | terraform |
-| github_repos                      | terraform |
+Note some duplicate variable declarations in the [example `variables.tf` file](./variables.tf). All input variables used in a configuration must be explicitly declared, even if they are already declared in a child module.
