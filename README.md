@@ -4,13 +4,15 @@
 
 GitHub has [introduced](https://github.blog/changelog/2021-10-27-github-actions-secure-cloud-deployments-with-openid-connect/) OpenID Connect ("OIDC") for GitHub Actions (see [roadmap](https://github.com/github/roadmap/issues/249) and [docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments)). OIDC allows workflows to authenticate with AWS by assuming [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html) that grant temporary security credentials, instead of by using static AWS access keys stored in GitHub Secrets. See the AWS IAM docs on [creating OIDC providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html) and [creating roles for OIDC providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp.html), and the [GitHub OIDC docs for AWS](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) for further info related to AWS.
 
-The [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) repo recommends OIDC, but only provides a CloudFormation snippet. The implementation in this repo is the Terraform equivalent. The [AWS Terraform provider](https://registry.terraform.io/providers/hashicorp/aws/latest) includes an [`iam_openid_connect_provider`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) resource for OIDC.
+The [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) repo recommends OIDC, but only provides a CloudFormation snippet. The implementation in this repo is the [OpenTofu](https://opentofu.org/) equivalent. The [AWS provider](https://github.com/opentofu/terraform-provider-aws) includes an `iam_openid_connect_provider` resource for OIDC.
 
-This Terraform module is published to the public Terraform module registry [here](https://registry.terraform.io/modules/br3ndonland/github-actions-oidc/aws/latest). It was originally published to my Terraform Cloud private module registry with a custom script available [here](https://gist.github.com/br3ndonland/2e3665a8117b5594b00f3d556d33cd57). In addition to this module, see other implementations from Cloud Posse ([repo](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/github-oidc-provider), [docs](https://docs.cloudposse.com/components/library/aws/github-oidc-provider/)) and terraform-aws-modules ([repo](https://github.com/terraform-aws-modules/terraform-aws-iam), [docs](https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest)).
+**This module is no longer published to the public Terraform module registry** because [Terraform is no longer open source](https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license). [OpenTofu](https://opentofu.org/) is an open source alternative to HashiCorp Terraform. Going forward, this module is intended to be used with OpenTofu and compatibility with newer versions of Terraform is not guaranteed.
+
+In addition to this module, see other implementations from [Cloud Posse](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/github-oidc-provider) and [terraform-aws-modules](https://github.com/terraform-aws-modules/terraform-aws-iam).
 
 ## Required permissions
 
-[Authentication is required for the AWS Terraform provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication) so that Terraform can apply configurations using this module. The [IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) recommend granting least privilege.
+Authentication is required for the AWS provider so that OpenTofu can apply configurations. The [IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) recommend granting least privilege.
 
 <details><summary>Here are the minimum required permissions for running this module <em>(expand)</em>. Adjust the resource names as needed.</summary>
 
@@ -121,13 +123,13 @@ This Terraform module is published to the public Terraform module registry [here
 
 ## Usage
 
-- Configure a [backend](https://developer.hashicorp.com/terraform/language/settings/backends/configuration) for Terraform state.
-- Set [Terraform input variables](https://developer.hashicorp.com/terraform/language/values/variables), either with variables set in a remote state workspace, by passing variable values in to the `terraform` CLI command directly with `-var`, or with a `.tfvars` file. Variable definitions files named `terraform.tfvars` or `*.auto.tfvars` will be loaded automatically. If using a variable definitions file with a different name, use `-var-file=filename.tfvars`.
-- Next, declare Terraform configurations specific to the repos and policies you want to configure. See the _examples/_ directory for example configurations. The module can be [used](https://developer.hashicorp.com/terraform/registry/modules/use) by adding a `module` block, as shown in the [example](examples/s3/main.tf).
-- Then, [initialize and apply](https://developer.hashicorp.com/terraform/intro/core-workflow) the Terraform configuration.
+- Configure a [state backend](https://opentofu.org/docs/language/settings/backends/configuration/).
+- Set [input variables](https://opentofu.org/docs/language/values/variables/), either with variables set in a remote state workspace, by passing variable values in to the `tofu` CLI command directly with `-var`, or with a `.tfvars` file. Variable definitions files named `*.auto.tfvars` will be loaded automatically. If using a variable definitions file with a different name, use `-var-file=filename.tfvars`.
+- Next, declare configurations specific to the repos and policies you want to configure. See the _examples/_ directory for example configurations. The module can be used by adding a `module` block, as shown in the [example](examples/s3/main.tf). The OpenTofu registry is currently evolving, so it is recommended to [reference this module](https://opentofu.org/docs/language/modules/sources/#github) by its GitHub repo instead.
+- Then, [initialize and apply](https://opentofu.org/docs/intro/core-workflow/) the configurations.
 
 ## Code quality
 
-- Terraform should be formatted with [`terraform fmt`](https://developer.hashicorp.com/terraform/cli/commands/fmt).
+- OpenTofu should be formatted with [`tofu fmt`](https://opentofu.org/docs/cli/commands/fmt/).
 - Shell scripts should be formatted with [`shfmt`](https://github.com/mvdan/sh), with two space indentations (`shfmt -i 2 -w .`), and will also be checked for errors with [ShellCheck](https://github.com/koalaman/shellcheck) (`shellcheck **/*.sh -S error`).
 - Other web code (JSON, Markdown, YAML) should be formatted with [Prettier](https://prettier.io/).
