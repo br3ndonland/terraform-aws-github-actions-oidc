@@ -24,7 +24,7 @@ jobs:
       - name: Check Terraform/OpenTofu formatting with terraform fmt
         run: tofu fmt -check -diff -recursive
       - name: Install Prettier
-        run: npm i -g "prettier@^${{ vars.PRETTIER_VERSION }}"
+        run: npm i -g "prettier@${{ vars.PRETTIER_VERSION }}"
       - name: Check web code formatting with Prettier
         run: prettier . --check
       - name: Install shfmt (https://github.com/mvdan/sh)
