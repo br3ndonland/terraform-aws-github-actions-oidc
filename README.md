@@ -14,106 +14,119 @@ In addition to this module, see other implementations from [Cloud Posse](https:/
 
 Authentication is required for the AWS provider so that OpenTofu can apply configurations. The [IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) recommend granting least privilege.
 
-<details><summary>Here are the minimum required permissions for running this module <em>(expand)</em>. Adjust the resource names as needed.</summary>
+<details><summary>Here are the minimum required permissions for running this module <em>(expand)</em>. Adjust the resource names as needed. Policy Sids (statement IDs) are organized by access level based on the <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_awsidentityandaccessmanagementiam.html">Service Authorization Reference</a>.</summary>
 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "IAMOIDCProviderProvisioningActions",
-      "Effect": "Allow",
       "Action": [
-        "iam:AddClientIDToOpenIDConnectProvider",
-        "iam:CreateOpenIDConnectProvider",
-        "iam:TagOpenIDConnectProvider",
-        "iam:UpdateOpenIDConnectProviderThumbprint"
-      ],
-      "Resource": [
-        "arn:aws:iam::*:oidc-provider/token.actions.githubusercontent.com"
-      ]
-    },
-    {
-      "Sid": "IAMOIDCProviderReadActions",
-      "Effect": "Allow",
-      "Action": [
-        "iam:GetOpenIDConnectProvider",
         "iam:ListOpenIDConnectProviders",
         "iam:ListOpenIDConnectProviderTags"
       ],
-      "Resource": ["*"]
+      "Effect": "Allow",
+      "Resource": ["*"],
+      "Sid": "IAMOIDCProviderListActions"
     },
     {
-      "Sid": "IAMOIDCProviderCleanupActions",
+      "Action": ["iam:GetOpenIDConnectProvider"],
       "Effect": "Allow",
+      "Resource": ["*"],
+      "Sid": "IAMOIDCProviderReadActions"
+    },
+    {
       "Action": [
-        "iam:DeleteOpenIDConnectProvider",
-        "iam:RemoveClientIDFromOpenIDConnectProvider",
+        "iam:TagOpenIDConnectProvider",
         "iam:UntagOpenIDConnectProvider"
       ],
+      "Effect": "Allow",
       "Resource": [
         "arn:aws:iam::*:oidc-provider/token.actions.githubusercontent.com"
-      ]
-    },
-    {
-      "Sid": "IAMRoleProvisioningActions",
-      "Effect": "Allow",
-      "Action": [
-        "iam:AttachRolePolicy",
-        "iam:CreateRole",
-        "iam:PutRolePolicy",
-        "iam:UpdateRole",
-        "iam:UpdateRoleDescription",
-        "iam:UpdateAssumeRolePolicy"
       ],
-      "Resource": ["arn:aws:iam::*:role/github*"]
+      "Sid": "IAMOIDCProviderTaggingActions"
     },
     {
-      "Sid": "IAMRoleReadActions",
-      "Effect": "Allow",
       "Action": [
-        "iam:GetRole",
-        "iam:ListAttachedRolePolicies",
-        "iam:ListInstanceProfilesForRole",
-        "iam:ListRolePolicies",
-        "iam:ListRoles"
+        "iam:AddClientIDToOpenIDConnectProvider",
+        "iam:CreateOpenIDConnectProvider",
+        "iam:DeleteOpenIDConnectProvider",
+        "iam:RemoveClientIDFromOpenIDConnectProvider",
+        "iam:UpdateOpenIDConnectProviderThumbprint"
       ],
-      "Resource": ["*"]
-    },
-    {
-      "Sid": "IAMRoleCleanupActions",
       "Effect": "Allow",
-      "Action": [
-        "iam:DeleteRole",
-        "iam:DeleteRolePolicy",
-        "iam:DetachRolePolicy"
+      "Resource": [
+        "arn:aws:iam::*:oidc-provider/token.actions.githubusercontent.com"
       ],
-      "Resource": ["arn:aws:iam::*:role/github*"]
+      "Sid": "IAMOIDCProviderWriteActions"
     },
     {
-      "Sid": "IAMPolicyProvisioningActions",
-      "Effect": "Allow",
-      "Action": ["iam:CreatePolicy", "iam:CreatePolicyVersion"],
-      "Resource": ["arn:aws:iam::*:policy/github*"]
-    },
-    {
-      "Sid": "IAMPolicyReadActions",
-      "Effect": "Allow",
       "Action": [
-        "iam:GetPolicy",
-        "iam:GetPolicyVersion",
         "iam:ListEntitiesForPolicy",
         "iam:ListPolicies",
         "iam:ListPolicyVersions",
         "iam:ListUserPolicies"
       ],
-      "Resource": ["*"]
+      "Effect": "Allow",
+      "Resource": ["*"],
+      "Sid": "IAMPolicyListActions"
     },
     {
-      "Sid": "IAMPolicyCleanupActions",
+      "Action": ["iam:GetPolicy", "iam:GetPolicyVersion"],
       "Effect": "Allow",
-      "Action": ["iam:DeletePolicy", "iam:DeletePolicyVersion"],
-      "Resource": ["arn:aws:iam::*:policy/github*"]
+      "Resource": ["*"],
+      "Sid": "IAMPolicyReadActions"
+    },
+    {
+      "Action": [
+        "iam:CreatePolicy",
+        "iam:CreatePolicyVersion",
+        "iam:DeletePolicy",
+        "iam:DeletePolicyVersion"
+      ],
+      "Effect": "Allow",
+      "Resource": ["arn:aws:iam::*:policy/github*"],
+      "Sid": "IAMPolicyPermissionsManagementActions"
+    },
+    {
+      "Action": [
+        "iam:ListAttachedRolePolicies",
+        "iam:ListInstanceProfilesForRole",
+        "iam:ListRolePolicies",
+        "iam:ListRoles"
+      ],
+      "Effect": "Allow",
+      "Resource": ["*"],
+      "Sid": "IAMRoleListActions"
+    },
+    {
+      "Action": ["iam:GetRole", "iam:GetRolePolicy"],
+      "Effect": "Allow",
+      "Resource": ["*"],
+      "Sid": "IAMRoleReadActions"
+    },
+    {
+      "Action": [
+        "iam:AttachRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:UpdateAssumeRolePolicy"
+      ],
+      "Effect": "Allow",
+      "Resource": ["arn:aws:iam::*:role/github*"],
+      "Sid": "IAMRolePermissionsManagementActions"
+    },
+    {
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:UpdateRole",
+        "iam:UpdateRoleDescription"
+      ],
+      "Resource": ["arn:aws:iam::*:role/github*"],
+      "Effect": "Allow",
+      "Sid": "IAMRoleWriteActions"
     }
   ]
 }
