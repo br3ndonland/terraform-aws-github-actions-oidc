@@ -6,9 +6,11 @@ GitHub has [introduced](https://github.blog/changelog/2021-10-27-github-actions-
 
 The [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) repo recommends OIDC, but only provides a CloudFormation snippet. The implementation in this repo is the [OpenTofu](https://opentofu.org/) equivalent. The [AWS provider](https://github.com/opentofu/terraform-provider-aws) includes an `iam_openid_connect_provider` resource for OIDC.
 
-**This module is no longer published to the public Terraform module registry** because [Terraform is no longer open source](https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license). [OpenTofu](https://opentofu.org/) is an open source alternative to HashiCorp Terraform. Going forward, this module is intended to be used with OpenTofu and compatibility with newer versions of Terraform is not guaranteed.
-
 In addition to this module, see other implementations from [Cloud Posse](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/github-oidc-provider) and [terraform-aws-modules](https://github.com/terraform-aws-modules/terraform-aws-iam).
+
+## OpenTofu
+
+[Terraform is no longer open source](https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license). [OpenTofu](https://opentofu.org/) is an open source alternative to HashiCorp Terraform. The module will continue to be published to the HashiCorp Public Module Registry at [br3ndonland/github-actions-oidc/aws](https://registry.terraform.io/modules/br3ndonland/github-actions-oidc/aws/latest), but going forward, this module is intended to be used with OpenTofu, and compatibility with newer versions of Terraform is not guaranteed.
 
 ## Required permissions
 
