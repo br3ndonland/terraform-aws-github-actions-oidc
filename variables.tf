@@ -30,7 +30,13 @@ variable "aws_iam_role_separator" {
 }
 
 variable "github_custom_claim" {
-  description = "Custom OIDC claim for more specific access scope within a repository"
+  description = <<-DESCRIPTION
+    Custom OIDC claim for more specific access scope within the repository.
+    The claim will be appended to the repo name, like "repo:repo-owner/repo-name:$${var.github_custom_claim}".
+    For more details on what can be specified in this claim, see the
+    [OIDC reference docs](https://docs.github.com/en/actions/reference/security/oidc) and
+    [OIDC how-to for AWS](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws).
+  DESCRIPTION
   type        = string
   default     = "*"
 }
