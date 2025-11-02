@@ -17,6 +17,22 @@ locals {
       ]
     )
   }
+  aws_iam_roles = merge([
+    for key, value in local.github_repos : can(tomap(try(var.aws_iam_role_names[value], ""))) ? {
+      for role_name, claims in var.aws_iam_role_names[value] :
+      "${key}-${substr(role_name, 0, 64)}" => {
+        claims    = claims
+        repo      = value
+        role_name = substr(role_name, 0, 64)
+      }
+      } : {
+      "${key}" = {
+        claims    = [var.github_custom_claim]
+        repo      = value
+        role_name = substr(try(var.aws_iam_role_names[value], local.aws_iam_role_name_defaults[key]), 0, 64)
+      }
+    }
+  ]...)
   github_repos       = { for repo in var.github_repos : lower(replace(repo, "/", "-")) => repo }
   oidc_client_ids    = ["sts.amazonaws.com"]
   oidc_issuer_domain = "token.actions.githubusercontent.com"
@@ -40,7 +56,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 # https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html
 
 data "aws_iam_policy_document" "role_trust_policy" {
-  for_each = local.github_repos
+  for_each = local.aws_iam_roles
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity", "sts:TagSession"]
     principals {
@@ -55,7 +71,7 @@ data "aws_iam_policy_document" "role_trust_policy" {
     condition {
       test     = "StringLike"
       variable = "${local.oidc_issuer_domain}:sub"
-      values   = ["repo:${each.value}:${var.github_custom_claim}"]
+      values   = [for claim in each.value.claims : "repo:${each.value.repo}:${claim}"]
     }
   }
 }
@@ -64,12 +80,8 @@ data "aws_iam_policy_document" "role_trust_policy" {
 # https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp.html
 
 resource "aws_iam_role" "github_actions_oidc" {
-  for_each           = local.github_repos
+  for_each           = local.aws_iam_roles
   assume_role_policy = data.aws_iam_policy_document.role_trust_policy[each.key].json
-  description        = "IAM assumed role for GitHub Actions in the ${each.value} repo"
-  name = (
-    length(lookup(var.aws_iam_role_names, each.value, "")) != 0
-    ? substr(var.aws_iam_role_names[each.value], 0, 64)
-    : substr(local.aws_iam_role_name_defaults[each.key], 0, 64)
-  )
+  description        = "IAM assumed role for GitHub Actions in the ${each.value.repo} repo"
+  name               = each.value.role_name
 }
