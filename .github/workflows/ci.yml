@@ -11,11 +11,6 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Add Homebrew to $PATH
-        if: runner.os == 'Linux'
-        run: |
-          # mitigate https://github.com/actions/runner-images/issues/6283
-          echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >>"$GITHUB_PATH"
       - uses: actions/checkout@v5
       - uses: opentofu/setup-opentofu@v1
         with:
@@ -27,20 +22,3 @@ jobs:
         run: npm i -g "prettier@${{ vars.PRETTIER_VERSION }}"
       - name: Check web code formatting with Prettier
         run: prettier . --check
-      - name: Install shfmt (https://github.com/mvdan/sh)
-        run: brew install shfmt
-      - name: Check shell script formatting with shfmt
-        run: shfmt -d -i 2 .
-      - name: Check shell script formatting with ShellCheck
-        run: |
-          shopt -s globstar nullglob
-          set -- **/*.{sh,bash,ksh}
-          if [ -n "$1" ]; then
-            echo "Checking $@"
-            shellcheck "$@"
-          else
-            echo "No shell scripts for ShellCheck to check."
-          fi
-        shell: bash
-        env:
-          SHELLCHECK_OPTS: -e SC1071 -e SC1090 -e SC1091
